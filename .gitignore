@@ -1,0 +1,10 @@
+__pycache__/
+.venv/
+.DS_Store
+*.md
+*.pptx
+!README.md
+static/*
+!static/template.pptx
+unicode/*
+!unicode/keep
