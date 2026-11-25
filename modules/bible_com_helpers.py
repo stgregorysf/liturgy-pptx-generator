@@ -1,6 +1,7 @@
 import logging
 import os
 from pathlib import Path
+import typing
 
 from modules import transliteration
 from modules.util import VersePair
@@ -35,7 +36,7 @@ def get_text_using_file(txt_file_path, line_number: int):
     return "[Text not found]"
 
 
-def get_gospel_verse_pairs(meta):
+def get_gospel_verse_pairs(meta) -> typing.Iterable[VersePair]:
     verse_pairs = []
     
     current_chapter = meta.start_chapter
@@ -119,3 +120,21 @@ def get_gospel_verse_pairs(meta):
         current_verse += 1
 
     return verse_pairs
+
+
+def get_letter_verse_pairs(meta):
+    result = [
+        VersePair(
+            reading_code="Psalms 65:1",
+            armenian_text="Ալէլուիա, ալէլուիա: Քեզ վայելէ օրհնութիւն, Աստուած, ի Սիոն, եւ քեզ տացին աղօթք յԵրուսաղէմ։",
+            transliterated_text=transliteration.transliterate("Ալէլուիա, ալէլուիա: Քեզ վայելէ օրհնութիւն, Աստուած, ի Սիոն, եւ քեզ տացին աղօթք յԵրուսաղէմ։"),
+            niv_text="Praise awaits you, our God, in Zion;to you our vows will be fulfilled.",
+        )
+        # todo add "the reading is from..."/առաքելոյն թղթոյն է ընթերցուածս
+    ]
+    reading = get_gospel_verse_pairs(meta)
+    if reading:
+        # put the actual reading on its own slide
+        reading[0].first_on_slide = True
+    result.extend(reading)
+    return result
