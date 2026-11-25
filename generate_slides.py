@@ -77,7 +77,7 @@ def generate_slides(soup, target_date, nor_dzaghig):
         is_sharagan=False
     )
 
-    letter_verse_pairs = bible_com_helpers.get_gospel_verse_pairs(extracted_letter_reading)
+    letter_verse_pairs = bible_com_helpers.get_letter_verse_pairs(extracted_letter_reading)
     letter_pptx = pptx_helpers.generate_reading_pptx(
         target_date,
         letter_verse_pairs,
@@ -135,9 +135,12 @@ def main():
         if not meta:
             logging.info("Could not parse metadata."); return
         bible_verse = f'{meta.book_code} {meta.start_chapter}:{meta.start_verse} - {meta.end_chapter}:{meta.end_verse}'
+
+        meta = daily_readings_helpers.get_letter_metadata(soup)
+        apostolic_letter = f'{meta.book_code} {meta.start_chapter}:{meta.start_verse} - {meta.end_chapter}:{meta.end_verse}'
         logging.info(WHATSAPP_MESSAGE_TEMPLATE.format(
             dailyreadings_url=daily_url,
-            apostolic_letter=daily_readings_helpers.get_line_containing_phrase(soup, 'թղթոյն է ընթերցուածս'),
+            apostolic_letter=apostolic_letter,
             before_reading=daily_readings_helpers.get_line_containing_phrase(soup, 'Ալէլուիա, ալէլուիա:'),
             bible_verse=bible_verse,
             bowing_reason=daily_readings_helpers.get_line_containing_phrase(soup, 'Օրհնեալ, գովեալ եւ փառաւորեալ, հրաշալի եւ աստուածազարդ'),
